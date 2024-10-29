@@ -1,0 +1,46 @@
+---
+- name: Задание «Работа с Ansible»
+  hosts: hosts
+  become: yes
+
+
+  tasks:
+    - name: установка пакетов
+      apt:
+        name: "{{ packages }}"
+        state: latest
+        update_cache: yes
+
+    - name: создание домашней веб-страницы
+      copy:
+        content: "{{ nginx_text }}"
+        dest: /var/www/html/index.html
+      notify: restart_nginx
+
+    - name: создание пользователя
+      user:
+        name: "{{ user_name }}"
+        password: "{{ host1_user_password if inventory_hostname == 'host1' else host2_user_password }}"
+        state: present
+
+    - name: правило UFW
+      ufw:
+        rule: "{{ item.rule }}"
+        port: "{{ item.port | default(omit) }}"
+        prot: "{{ item.prot | default(omit) }}"
+      loop: "{{ ufw_rules }}"
+      notify: restart_ufw
+
+
+  handlers:
+    - name: перезагрузка nginx
+      service:
+        name: nginx
+        state: restarted
+      listen: restart_nginx
+
+    - name: перезагрузка ufw
+      service:
+        name: ufw
+        state: restarted
+      listen: restart_ufw

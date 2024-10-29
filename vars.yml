@@ -1,0 +1,18 @@
+---
+packages:
+  - net-tools
+  - curl
+  - nginx
+
+ufw_rules:
+  - rule: "allow"
+    port: "22"
+    prot: "tcp"
+  - rule: "allow"
+    port: "80"
+    prot: "tcp"
+  - rule: "deny"
+    prot: "all"
+
+host1_user_password: "1234"
+host2_user_password: "1234"
