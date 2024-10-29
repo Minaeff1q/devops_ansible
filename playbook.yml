@@ -26,8 +26,8 @@
     - name: правило UFW
       ufw:
         rule: "{{ item.rule }}"
-        port: "{{ item.port | default(omit) }}"
-        prot: "{{ item.prot | default(omit) }}"
+        to_port: "{{ item.port | default(omit) }}"
+        proto: "{{ item.prot | default(omit) }}"
       loop: "{{ ufw_rules }}"
       notify: restart_ufw
 

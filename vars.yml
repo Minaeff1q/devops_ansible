@@ -12,7 +12,7 @@ ufw_rules:
     port: "80"
     prot: "tcp"
   - rule: "deny"
-    prot: "all"
+    prot: "any"
 
 host1_user_password: "1234"
 host2_user_password: "1234"
